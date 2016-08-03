@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  issueID: MyString
+  int,: MyString
+  issueType: MyString
+  int: MyString
+
+two:
+  issueID: MyString
+  int,: MyString
+  issueType: MyString
+  int: MyString
