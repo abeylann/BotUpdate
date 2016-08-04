@@ -16,8 +16,11 @@ def up
 			@issueID = params[:id]
 			if Info.exists?(:issueID => @issueID.to_i)
 					puts "It Exists"
-					# if issueType.changed?
-					# 	puts "Yes yes"
+					if :issueType != @issueType.to_i
+						puts "Has changed"
+					else
+						puts "It's the same"
+					end
 			else
 			i = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 			i.save
