@@ -7,11 +7,23 @@ def up
 	respond_to do |f|
 		f.json {render :json => @info}
 
+		# I know that it IS checking existance by issueID... And it _is_ doing what it
+		# is supposed to do. But for some reason, it prints ! and . in every line of 
+		# params... and makes no much sense because of that. 
+
 		JSON.parse(request.body.read).each do |item|
-			@type = params[:fields]["issuetype"]["id"]
-			@issue = params[:id]
-			i = Info.new(:issueType => (@type.to_i), :issueID => (@issue.to_i))
+			@issueType = params[:fields]["issuetype"]["id"]
+			@issueID = params[:id]
+			if Info.exists?(:issueID => @issueID.to_i)
+					puts "It Exists"
+					# if issueType.changed?
+					# 	puts "Yes yes"
+			else
+			i = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 			i.save
+			puts "Doesn't exist"
+			
+			end
 		end
 	end
 

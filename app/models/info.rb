@@ -2,7 +2,17 @@ class Info < ApplicationRecord
 
 	validates :issueID, :uniqueness => true
 	
-	
+	# infos = Info.all
+
+	# if Info.exists?(:issueID => @issueID)
+	# 	puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	# else
+	# 	puts "...................................."
+	# 	Info.create
+	# end
+
+
+	# end
 		# def as_json (options= {})
 		# response = JSON.parse(request.body.read)
 
@@ -13,5 +23,4 @@ class Info < ApplicationRecord
 		# 	# 	)
 		# 	# Info.save
 		# end
-		# end
-end
+end		# end
