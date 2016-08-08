@@ -14,19 +14,27 @@ def up
 		JSON.parse(request.body.read).each do |item|
 			@issueType = params[:fields]["issuetype"]["id"]
 			@issueID = params[:id]
+			i = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 			if Info.exists?(:issueID => @issueID.to_i)
 					puts "It Exists"
-					if :issueType != @issueType.to_i
-						puts "Has changed"
-					else
+					if Info.where(:issueID == @issueID.to_i)&&(:issueType == @issueType.to_i)
 						puts "It's the same"
+					else
+						puts "Has changed"
+						# i.delete
+						# if Info.where (:issueID == @issueID.to_i) do 
+						Info.where(:issueID => @issueID.to_i).update(issueType: @issueType.to_i)
+						i.save
+						
 					end
+					
 			else
-			i = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 			i.save
 			puts "Doesn't exist"
 			
 			end
+
+			puts Info.count
 		end
 	end
 
