@@ -8,9 +8,9 @@ def up
 	respond_to do |f|
 		f.json {render :json => @info}
 			@info = JSON.parse(request.body.read)
-			@issueType = params[:fields]["issuetype"]["id"]
-			@issueID = params[:id]
-			name = params[:key]
+			@issueType = params[:issue]["fields"]["issuetype"]["id"]
+			@issueID = params[:issue]["id"]
+			name = params[:issue]["key"]
 			link = "\n For more info, click here: http://deliveroo.atlassian.net/browse/"+ name
 			notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#jiraslack', username: 'Incident Updates'
 
