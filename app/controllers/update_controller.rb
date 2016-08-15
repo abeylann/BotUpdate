@@ -22,10 +22,24 @@ def up
 
 							if issue.issueType == 10300 && @issueType == "10004"
 								issue.update(issueType: @issueType)
-								notifier.ping "<!channel> \nIncident " + name + " has now been downgraded to Bug" + link
+
+								attachment1 = {
+									fallback: "Emergency downgraded to bug",
+									text: "<!channel> \nIncident " + name + " has now been downgraded to Bug" + link,
+									color: "#0078ff"
+								}
+								notifier.ping attachments:  [attachment1]
+
 							elsif issue.issueType == 10004 && @issueType == "10300"
 								issue.update(issueType: @issueType)
-								notifier.ping "<!channel> \nIncident " + name + " has now been upgraded to Emergency" + link
+
+								attachment2 = {
+									fallback:  "Bug upgraded to Emergency",
+									text: "<!channel> \nIncident "+ name +" has now been upgraded to Emergency" + link,
+									color: "#FF0000"
+								}
+
+								notifier.ping attachments: [attachment2]
 							end
 				end
 
