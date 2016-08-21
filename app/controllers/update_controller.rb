@@ -8,7 +8,7 @@ def up
 	['Content-Type']=='application/json'
 	respond_to do |f|
 		f.json {render :json => @info}
-			pagerduty = Pagerduty.new("DpUEEvjMnMLGx1ZzRrbd")
+		 	# pagerduty = Pagerduty.new("DpUEEvjMnMLGx1ZzRrbd")
 			@info = JSON.parse(request.body.read)
 			@issueType = params[:issue]["fields"]["issuetype"]["id"]
 			@issueID = params[:issue]["id"]
@@ -24,9 +24,9 @@ def up
 						if (issue.issueType != @issueType)
 
 							if issue.issueType == 10300 && @issueType == "10004"
-								issue.update(issueType: @issueType)
-								incident = pagerduty.get_incident(@issueID)
-								incident.resolve
+								 issue.update(issueType: @issueType)
+								# incident = pagerduty.get_incident(@issueID)
+								# incident.resolve
 								attachment1 = {
 									fallback: "Emergency downgraded to bug",
 									text: "<!channel> \nIncident " + name + " has now been downgraded to Bug" + link,
@@ -36,7 +36,7 @@ def up
 
 							elsif issue.issueType == 10004 && @issueType == "10300"
 								issue.update(issueType: @issueType)
-								incident2 = pagerduty.trigger(@description)
+								# incident2 = pagerduty.trigger(@description)
 								attachment2 = {
 									fallback:  "Bug upgraded to Emergency",
 									text: "<!channel> \nIncident "+ name +" has now been upgraded to Emergency" + link,
