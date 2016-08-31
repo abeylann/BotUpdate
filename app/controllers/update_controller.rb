@@ -13,8 +13,11 @@ def up
 			@issueType = params[:issue]["fields"]["issuetype"]["id"]
 			@issueID = params[:issue]["id"]
 			@description = params[:issue]["fields"]["summary"]
-			name = params[:issue]["key"]
-			link = "\n For more info, click here: http://deliveroo.atlassian.net/browse/"+ name
+			@name = params[:issue]["key"]
+			@type = params[:issue]["fields"]["issuetype"]["name"]
+			@status = params[:issue]["fields"]["status"]["name"]
+			@priority = params[:issue]["fields"]["priority"]["name"]
+			link = "\n For more info, click here: http://deliveroo.atlassian.net/browse/"+ @name
 			notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#jiraslack', username: 'Incident Updates'
 			inf = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 
@@ -29,7 +32,7 @@ def up
 								# incident.resolve
 								attachment1 = {
 									fallback: "Emergency downgraded to bug",
-									text: "<!channel> \nIncident " + name + " has now been downgraded to Bug" + link,
+									text: "<!channel> \nIncident " + @name + " has now been downgraded to Bug" + link,
 									color: "#0078ff"
 								}
 								notifier.ping attachments:  [attachment1]
@@ -39,7 +42,7 @@ def up
 								# incident2 = pagerduty.trigger(@description)
 								attachment2 = {
 									fallback:  "Bug upgraded to Emergency",
-									text: "<!channel> \nIncident "+ name +" has now been upgraded to Emergency" + link,
+									text: "<!channel> \nIncident "+ @name +" has now been upgraded to Emergency" + link,
 									color: "#FF0000"
 								}
 								notifier.ping attachments: [attachment2]
@@ -48,6 +51,15 @@ def up
 
 			else
 			inf.save
+			if inf.issueType == 10300
+				attachment_new = {
+							fallback: "New emergency",
+							text: "<!channel>" +"\n Type: " + @type + "\n Incident: " + @name + "\n Summary: "+ @description+"\n Status: "+ @status +"\n Priority: "+ @priority + link,
+							color: '#ff0000'
+						}
+            notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#jiraslack', username: 'Incident'
+            notifier.ping attachments: [attachment_new]
+			end
 			end
 
 	end
