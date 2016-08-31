@@ -17,8 +17,11 @@ def up
 			@type = params[:issue]["fields"]["issuetype"]["name"]
 			@status = params[:issue]["fields"]["status"]["name"]
 			@priority = params[:issue]["fields"]["priority"]["name"]
-			link = "\n For more info, click here: http://deliveroo.atlassian.net/browse/"+ @name
-			notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#jiraslack', username: 'Incident Updates'
+			url = ENV["JIRA_URL"]
+			slack_new = ENV["SLACK_NEW"]
+			slack_update = ENV["SLACK_UPDATE"]
+			link = "\n For more info, click here: "+ url + @name
+			notifier = Slack::Notifier.new slack_update, channel: '#jiraslack', username: 'Incident Updates'
 			inf = Info.new(:issueType => (@issueType.to_i), :issueID => (@issueID.to_i))
 
 			if Info.exists?(:issueID => @issueID.to_i)
@@ -57,7 +60,7 @@ def up
 							text: "<!channel>" +"\n Type: " + @type + "\n Incident: " + @name + "\n Summary: "+ @description+"\n Status: "+ @status +"\n Priority: "+ @priority + link,
 							color: '#ff0000'
 						}
-            notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#jiraslack', username: 'Incident'
+            notifier = Slack::Notifier.new slack_new, channel: '#jiraslack', username: 'Incident'
             notifier.ping attachments: [attachment_new]
 			end
 			end
